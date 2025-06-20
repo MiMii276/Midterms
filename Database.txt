@@ -1,0 +1,60 @@
+
+CREATE TABLE Roles (
+    RoleID INT PRIMARY KEY AUTO_INCREMENT,
+    RoleName VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(100) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL,
+    RoleID INT NOT NULL,
+    FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
+);
+
+
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Category VARCHAR(100),
+    Price DECIMAL(10, 2) NOT NULL
+);
+
+
+CREATE TABLE Suppliers (
+    SupplierID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    ContactInfo VARCHAR(255)
+);
+
+
+CREATE TABLE SupplierProducts (
+    SupplierID INT,
+    ProductID INT,
+    PRIMARY KEY (SupplierID, ProductID),
+    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+
+CREATE TABLE Stock (
+    StockID INT PRIMARY KEY AUTO_INCREMENT,
+    ProductID INT NOT NULL,
+    SupplierID INT NOT NULL,
+    QuantityAdded INT NOT NULL,
+    DateAdded DATE NOT NULL,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
+);
+
+CREATE TABLE Sales (
+    SaleID INT PRIMARY KEY AUTO_INCREMENT,
+    ProductID INT NOT NULL,
+    QuantitySold INT NOT NULL,
+    SaleDate DATE NOT NULL,
+    TotalAmount DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+INSERT INTO Roles (RoleName) VALUES ('Admin'), ('Staff');
+
